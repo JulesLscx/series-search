@@ -11,9 +11,24 @@ class Cleaner:
     def __init__(self, path_to_clean):
         if os.path.exists(path_to_clean):
             self.path_to_clean = path_to_clean
+        if path_to_clean == None or path_to_clean == '':
+            return;
         else:
             raise Exception("Path does not exists")
         
+    def set_path_to_clean(self, path_to_clean):
+        if os.path.exists(path_to_clean):
+            self.path_to_clean = path_to_clean
+        else:
+            raise Exception("Path does not exists")
+
+    def clean(self):
+        if os.path.isfile(self.path_to_clean):
+            try :
+                tmp = self.read_file(self.path_to_clean)
+                return self.clean_text(tmp)
+            except:
+                return ''
         
     def clean_text(self, file):
         lines = []
