@@ -8,7 +8,9 @@ class Cleaner:
     
     path_to_clean = None
     
-    def __init__(self, path_to_clean):
+    def __init__(self, path_to_clean=None):
+        if(path_to_clean == None or path_to_clean == ''):
+            return;
         if os.path.exists(path_to_clean):
             self.path_to_clean = path_to_clean
         if path_to_clean == None or path_to_clean == '':
@@ -66,4 +68,4 @@ class Cleaner:
     def read_file(self, filename):
         with open(filename) as f:
             return f.read()
-        
+    

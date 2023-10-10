@@ -2,26 +2,28 @@ import py7zr
 import zipfile
 import os
 import re
-from cleaner import Cleaner
+import shutil
+from api.cleaner import Cleaner
 
 
 class Unzipper:
     destination = None
     path_to_process = None
+    
+    def __init__(self, destination=None, path_to_process=None):
+        self.destination = destination
+        self.path_to_process = path_to_process
+        
     def u_zip(self, path):
         if (not os.path.exists(path)):
             raise Exception("Path does not exists")
         else:
             with py7zr.SevenZipFile(path, mode='r') as z:
-                z.extractall()
-        return True
-    
-    def __init__(self, destination, path_to_process):
-        if os.path.exists(destination):
-            self.destination = destination
-        else:
-            raise Exception("Path does not exists")
-        
+                z.extractall('./tmp')
+        tmp_path= os.listdir('./tmp')[0]
+        new_path = os.path.join(os.getcwd() ,'tmp', tmp_path)
+        self.path_to_process = new_path
+        return new_path
         
     def file_categoriser(self, folderName, fileName):
         dic = {}
@@ -80,7 +82,11 @@ class Unzipper:
                         print('Error with ' + file_path)
                         continue
                     
-    def categorise_all_sub(self, path, path_to_move):
+    def categorise_all_sub(self, path=None, path_to_move=None):
+        if (path == None):
+            path = self.path_to_process
+        if (path_to_move == None):
+            path_to_move = self.destination
         self.unzip_all(path)
         cleaner = Cleaner()
         os.makedirs(path_to_move, exist_ok=True)
@@ -115,3 +121,9 @@ class Unzipper:
                             f.write(clean_subs)
                     else:
                         continue
+        rmtmp()
+        
+def rmtmp():
+    if(os.path.exists(os.path.join(os.getcwd(), 'tmp'))):
+        shutil.rmtree(os.path.join(os.getcwd(), 'tmp'))
+    os.makedirs(os.path.join(os.getcwd(), 'tmp'), exist_ok=True)
