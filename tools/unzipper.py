@@ -3,28 +3,28 @@ import zipfile
 import os
 import re
 import shutil
-from api.cleaner import Cleaner
+from tools.cleaner import Cleaner
 
 
 class Unzipper:
     destination = None
     path_to_process = None
-    
+
     def __init__(self, destination=None, path_to_process=None):
         self.destination = destination
         self.path_to_process = path_to_process
-        
+
     def u_zip(self, path):
         if (not os.path.exists(path)):
             raise Exception("Path does not exists")
         else:
             with py7zr.SevenZipFile(path, mode='r') as z:
                 z.extractall('./tmp')
-        tmp_path= os.listdir('./tmp')[0]
-        new_path = os.path.join(os.getcwd() ,'tmp', tmp_path)
+        tmp_path = os.listdir('./tmp')[0]
+        new_path = os.path.join(os.getcwd(), 'tmp', tmp_path)
         self.path_to_process = new_path
         return new_path
-        
+
     def file_categoriser(self, folderName, fileName):
         dic = {}
         folderName = folderName.replace(' ', '')
@@ -50,7 +50,7 @@ class Unzipper:
         dic['episode'] = episode
         dic['language'] = language
         return dic
-    
+
     def find_serie(self, dirs):
         is_next = False
         for directory in dirs:
@@ -60,7 +60,7 @@ class Unzipper:
             if is_next:
                 return directory
         return None
-    
+
     def unzip_all(self, path):
         for root, dirs, files in os.walk(path, topdown=False):
             for file in files:
@@ -81,7 +81,7 @@ class Unzipper:
                     except:
                         print('Error with ' + file_path)
                         continue
-                    
+
     def categorise_all_sub(self, path=None, path_to_move=None):
         if (path == None):
             path = self.path_to_process
@@ -122,8 +122,9 @@ class Unzipper:
                     else:
                         continue
         rmtmp()
-        
+
+
 def rmtmp():
-    if(os.path.exists(os.path.join(os.getcwd(), 'tmp'))):
+    if (os.path.exists(os.path.join(os.getcwd(), 'tmp'))):
         shutil.rmtree(os.path.join(os.getcwd(), 'tmp'))
     os.makedirs(os.path.join(os.getcwd(), 'tmp'), exist_ok=True)
