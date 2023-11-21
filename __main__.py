@@ -1,6 +1,7 @@
 import tools.unzipper
 import os
 import pandas as pd
+import tqdm
 from tools.tokenizer import Tokenizer, Lematize
 
 
@@ -33,6 +34,7 @@ def test():
 
 if __name__ == '__main__':
     # test()
+    tqdm.pandas()
     df = load_data()
     df['text'] = Lematize().lematize_text(text_list=df['text'].tolist())
     print(df.head())
