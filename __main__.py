@@ -10,6 +10,7 @@ from es_interface.importer import ElasticSearchImports
 from es_interface.query import search
 from elasticsearch import Elasticsearch
 from global_var import ES_ENDPOINT, ES_USER, ES_PASSWORD
+from test import test_search
 def treat_import_command():
     # if not data in ./data/processed, raise error
     if(os.path.exists('./data/processed') and os.listdir('./data/processed') == []):
@@ -58,6 +59,7 @@ if len(sys.argv) < 2:
     print("query")
     print("import")
     print("run_api")
+    print("test_search")
     exit()
 
 if sys.argv[1] == "unzip":
@@ -77,3 +79,8 @@ elif sys.argv[1] == "query":
         exit()
     text = sys.argv[2]
     treated_query_command(text)
+    exit()
+elif sys.argv[1] == "test_search":
+    es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
+    test_search.run(es)
+    exit()
