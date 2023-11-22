@@ -10,60 +10,31 @@ def search(es: Elasticsearch, text: str):
 
     text_without_space = text.replace(" ", "")
     text_for_query = preprocess(text)
-
-    search_body ={
-        "_source": ["serie"],
-        "size": 0,
-        "query": {
-            "bool": {
+    print(text_without_space)
+    search_query = {
+    "_source": [ "serie" ],
+    "size": 0,
+    "query": {
+        "bool": {
             "should": [
-                {
-                "match": {
-                    "serie.keyword": {
-                    "query": text_without_space,  
-                    "operator": "and",
-                    "boost": 2
-                    }
-                }
-                },
-                {
-                "match": {
-                    "subtitle": {
-                    "query": text_for_query,  
-                    "operator": "and"
-                    }
-                }
-                }
+                { "match": { "serie": { "query": text_without_space, "boost": 4 } } },
+                { "match": { "subtitle": { "query": text_for_query , "operator":"and"} } }
             ]
-            }
-        },
-        "aggs": {
-            "series": {
-            "terms": {
-                "field": "serie.keyword",
-                "size": 20,
-                "order": {
-                "_key": "desc"
-                }
-            }
-            }
         }
+    },
+    "aggs": {
+        "series": {
+            "terms": { "field": "serie" },
+            "aggs": { "total_score": { "avg": { "script": "_score" } } }
         }
-
-
-    index_name = "testing"
-    result = es.search(index=index_name, body=search_body)
-
-    ranking = {}
-
-
-    to_return = {
-        # "ranking": ranking,
-        # "infos": {
-        #     "took": result['took'],
-        #     "total": result['hits']['total']['value']
-        # }
     }
+}
+
+    result = es.search(index="testing", body=search_query)
     from pprint import pprint
-    pprint(result)
-    return to_return
+    ranking = {}
+    i=1
+    for serie in result['aggregations']['series']["buckets"]:
+        ranking[str(i)] = serie['key']
+        i+=1
+    pprint(ranking)
