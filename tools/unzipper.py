@@ -4,6 +4,7 @@ import os
 import re
 import shutil
 from tools.cleaner import Cleaner
+import tqdm
 
 
 class Unzipper:
@@ -14,7 +15,9 @@ class Unzipper:
         self.destination = destination
         self.path_to_process = path_to_process
 
-    def u_zip(self, path):
+    def u_zip(self, path=None):
+        if (path == None):
+            path = self.path_to_process
         if (not os.path.exists(path)):
             raise Exception("Path does not exists")
         else:
@@ -99,8 +102,7 @@ class Unzipper:
                 os.makedirs(path_to_copy, exist_ok=True)
             else:
                 continue
-            for root, dirs, files in os.walk(os.path.join(path, serie), topdown=False):
-                print(root)
+            for root, dirs, files in tqdm.tqdm(os.walk(os.path.join(path, serie), topdown=False)):
                 for file in files:
                     if file.endswith('.srt') or file.endswith('.sub'):
                         file_path = os.path.join(root, file)

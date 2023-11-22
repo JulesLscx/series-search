@@ -25,6 +25,7 @@ class StopWords:
         if cls.instance is None:
             cls.instance = super(StopWords, cls).__new__(cls)
             cls.instance.load_stop_words()
+            print("\nStop words loaded")
         return cls.instance
 
     def load_stop_words(self):
@@ -38,7 +39,6 @@ class StopWords:
             tmp = remove_accents(tmp)
             tmp = remove_ponctuation(tmp)
             self.stop_words.add(tmp)
-        print (self.stop_words)
         
     def is_a_stop_word(self, word: str) -> bool:
         return word in self.stop_words
@@ -57,9 +57,3 @@ def preprocess(text: str) -> str:
     text = lemma(text)
     text = " ".join(text)
     return text
-
-if __name__ == "__main__":
-    with open(".\data\processed\90210\90210s01e01e02VF.txt", "r", encoding="utf-8") as f:
-        text = f.read()
-        text = preprocess(text)
-        print(text)
