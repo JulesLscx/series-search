@@ -12,7 +12,7 @@ def remove_all_accents(text: list) -> list:
     result = [remove_accents(word) for word in text]
     return result
 def remove_ponctuation(text: str) -> str:
-    text = text.translate(str.maketrans('', '', string.punctuation))
+    text = text.translate(str.maketrans(' ', ' ', string.punctuation))
     return text        
 
 class StopWords:

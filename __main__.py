@@ -10,7 +10,7 @@ from es_interface.importer import ElasticSearchImports
 from es_interface.query import search
 from elasticsearch import Elasticsearch
 from global_var import ES_ENDPOINT, ES_USER, ES_PASSWORD
-from test import test_search
+from test.test_search import with_different_bm25_params
 def treat_import_command():
     # if not data in ./data/processed, raise error
     if(os.path.exists('./data/processed') and os.listdir('./data/processed') == []):
@@ -82,5 +82,11 @@ elif sys.argv[1] == "query":
     exit()
 elif sys.argv[1] == "test_search":
     es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
-    test_search.run(es)
+    # test_search.run(es)
+    with_different_bm25_params(es)
+    exit()
+elif sys.argv[1] == "recommend":
+    es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
+    from es_interface.recommendation import recommendate
+    print(recommendate(es, ["alias", "ncis", "24", "breakingbad", "prisonbreak",'smallville', 'stargatesg1', 'friends', 'scrubs', 'charmed', 'southpark', 'bones', 'xfiles', 'onetreehill', 'lost','criminalminds', 'entourage', 'buffy', 'coldcase', 'supernatural', 'desperatehousewives', 'greysanatomy', 'doctorwho', 'intreatment', 'theoc','howimetyourmother', 'uglybetty', 'angel', 'ghostwhisperer', 'medium', 'thesopranos', 'niptuck', 'thepretender', 'veronicamars', 'weeds']))
     exit()

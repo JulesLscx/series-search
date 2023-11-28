@@ -66,6 +66,12 @@ class Cleaner:
         return text
     
     def read_file(self, filename):
-        with open(filename) as f:
-            return f.read()
-    
+        try :
+            with open(filename) as f:
+                return f.read()
+        except:
+            try : 
+                with open(filename, encoding="utf-8") as f:
+                    return f.read()
+            except:
+                return ''

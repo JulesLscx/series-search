@@ -17,7 +17,7 @@ def search(es: Elasticsearch, text: str):
         "bool": {
             "should": [
                 { "match": { "serie": { "query": text_without_space, "boost": 2 } } },
-                { "match": { "subtitle": { "query": text_for_query, "operator":"and"} } }
+                { "match": { "subtitle": { "query": text_for_query, "operator":"and" } } }
             ]
         }
     },
