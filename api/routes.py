@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_user, login_required, current_user, logout_user
+import datetime
+from api.models import db, Users, Series, Watched, Role
 
-from models import db, Users, Series, Watched, Role
-
+REMEMBER_COOKIE_DURATION = datetime.timedelta(minutes=3)
 api = Blueprint('api', __name__)
 @api.route('/login', methods=['POST'])
 def login():
@@ -11,7 +12,7 @@ def login():
     if not user or not user.check_password(data['password']):
         return jsonify({'message': 'Invalid credentials'}), 401
 
-    login_user(user)
+    login_user(user, remember=False, duration = REMEMBER_COOKIE_DURATION)
     return jsonify({'message': 'Login successful'}), 200
 # Routes
 @api.route('/admin/create_user', methods=['POST'])
@@ -32,9 +33,18 @@ def create_user():
 @api.route('/logout')
 @login_required
 def logout():
+    if not current_user or not current_user.is_authenticated:
+        return jsonify({'message': 'You are not logged in, don\'t need to logout'}), 401
     logout_user()
     return jsonify({'message': 'Logout successful'}), 200
 
 @api.route('/')
 def is_ready():
-    return jsonify({'message': 'API is ready'}), 200
+    myUser = Users.query.first()
+    if not myUser:
+        tmp = Users('admin', None,Role.admin).set_password('admin')
+        db.session.add(tmp)
+        db.session.commit()
+        return jsonify({'message': 'API is ready but no user has been created yet'}), 200
+
+    return jsonify({'message': f'API is ready {myUser}'}), 200

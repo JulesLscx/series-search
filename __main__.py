@@ -10,7 +10,7 @@ from es_interface.importer import ElasticSearchImports
 from es_interface.query import search
 from elasticsearch import Elasticsearch
 from global_var import ES_ENDPOINT, ES_USER, ES_PASSWORD
-from test.test_search import with_different_bm25_params
+from test.score_search import with_different_bm25_params
 def treat_import_command():
     # if not data in ./data/processed, raise error
     if(os.path.exists('./data/processed') and os.listdir('./data/processed') == []):
@@ -90,3 +90,6 @@ elif sys.argv[1] == "recommend":
     from es_interface.recommendation import recommendate
     print(recommendate(es, ["alias", "ncis", "24", "breakingbad", "prisonbreak",'smallville', 'stargatesg1', 'friends', 'scrubs', 'charmed', 'southpark', 'bones', 'xfiles', 'onetreehill', 'lost','criminalminds', 'entourage', 'buffy', 'coldcase', 'supernatural', 'desperatehousewives', 'greysanatomy', 'doctorwho', 'intreatment', 'theoc','howimetyourmother', 'uglybetty', 'angel', 'ghostwhisperer', 'medium', 'thesopranos', 'niptuck', 'thepretender', 'veronicamars', 'weeds']))
     exit()
+elif sys.argv[1] == "run_api":
+    from api.app import run_api
+    run_api()
