@@ -91,5 +91,6 @@ elif sys.argv[1] == "recommend":
     print(recommendate(es, ["alias", "ncis", "24", "breakingbad", "prisonbreak",'smallville', 'stargatesg1', 'friends', 'scrubs', 'charmed', 'southpark', 'bones', 'xfiles', 'onetreehill', 'lost','criminalminds', 'entourage', 'buffy', 'coldcase', 'supernatural', 'desperatehousewives', 'greysanatomy', 'doctorwho', 'intreatment', 'theoc','howimetyourmother', 'uglybetty', 'angel', 'ghostwhisperer', 'medium', 'thesopranos', 'niptuck', 'thepretender', 'veronicamars', 'weeds']))
     exit()
 elif sys.argv[1] == "run_api":
-    from api.app import run_api
-    run_api()
+    from api.app import create_app
+    app = create_app()
+    app.run(debug=True)

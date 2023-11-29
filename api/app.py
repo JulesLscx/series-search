@@ -1,38 +1,46 @@
 from flask import Flask
 from flask_login import LoginManager
-
 from api.models import db, Users, Role
 from api.routes import api
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SECRET_KEY'] = "your_secret_key"
-app.register_blueprint(api, url_prefix='/serie-search')
 
-db.init_app(app)
-login_manager = LoginManager(app)
 
-@login_manager.user_loader
-def load_users(Users_id):
-    return Users.query.get(Users_id)
-
-if __name__ == '__main__':
+def create_admin(app):
     with app.app_context():
         db.create_all()
-
-    app.run(debug=True)
-def run_api():
-    #Create sqlite database
-    with app.app_context():
-        db.create_all()
-        existing_user = Users.query.filter_by(name='admin').first()
-        if existing_user:
-            print("User already exists")
-        else : 
-            admin_user = Users(name='admin', password='your_password', role=Role.ADMIN.value)
-            admin_user.set_password(admin_user.password)
-            # Add the user to the database
-            db.session.add(admin_user)
+        if not Users.query.first():
+            tmp = Users('admin', 'your_password',Role.ADMIN.value)
+            db.session.add(tmp)
             db.session.commit()
-    app.run(debug=True)
-    #Print the users table
+        else:
+            raise Exception("Admin already created")
+        
+def create_user(app):
+    with app.app_context():
+        if not Users.query.filter_by(name='user').first():
+            tmp = Users('user', 'your_password',Role.USER.value)
+            db.session.add(tmp)
+            db.session.commit()
+        else:
+            raise Exception("User already created")
+
+def create_app():
+    app = Flask(__name__)
+    # app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SECRET_KEY'] = "your_secret_key"
+    app.register_blueprint(api, url_prefix='/serie-search')
+    db.init_app(app)
+    login_manager = LoginManager(app)
+    @login_manager.user_loader
+    def load_users(Users_id):
+        return Users.query.get(Users_id)
+    try : 
+        create_admin(app)
+    except Exception as e:
+        print(e)
+    try :
+        create_user(app)
+    except Exception as e:
+        print(e)
+    return app

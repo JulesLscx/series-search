@@ -7,7 +7,8 @@ db = SQLAlchemy()
 class Role(Enum):
     USER = 0
     ADMIN = 1
-
+    def possible_values(self):
+        return [Role.USER.value, Role.ADMIN.value]
     def __str__(self) -> str:
         return self.name
 
@@ -26,7 +27,10 @@ class Users(UserMixin, db.Model):
     name = db.Column(db.String(50), primary_key=True)
     password = db.Column(db.String(256), nullable=False)
     role = db.Column(db.Integer, nullable=False, default=Role.USER.value)
-
+    def __init__(self, name, password, role) -> None:
+        self.name = name
+        self.set_password(password)
+        self.role = role
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -44,9 +48,14 @@ class Users(UserMixin, db.Model):
     
 
 class Series(db.Model):
-    idSerie = db.Column(db.Integer, primary_key=True, )
+    idSerie = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(50), nullable=False)
+    def __init__(self, title) -> None:
+        self.title = title
 
 class Watched(db.Model):
-    idUser = db.Column(db.Integer, db.ForeignKey('users.name'), primary_key=True)
+    idUser = db.Column(db.String(50), db.ForeignKey('users.name'), primary_key=True)
     idSerie = db.Column(db.Integer, db.ForeignKey('series.idSerie'), primary_key=True)
+    def __init__(self, user: Users, serie: Series) -> None:
+        self.idUser = user.name
+        self.idSerie = serie.idSerie

@@ -18,12 +18,18 @@ def login():
 @api.route('/admin/create_user', methods=['POST'])
 @login_required
 def create_user():
-    if current_user.role != Role.admin:
+    if current_user.role != Role.ADMIN.value:
         return jsonify({'message': 'You do not have permission to create users'}), 403
-
     data = request.get_json()
+    if not data or not data['name'] or not data['password'] or not data['role']:
+        return jsonify({'message': 'Missing parameters check documentation'}), 400
+    if Users.query.filter_by(name=data['name']).first():
+        return jsonify({'message': 'User already exists, if you want to modify password use PUT method'}), 400
+    if data['role'] not in Role.possible_values():
+        return jsonify({'message': 'Role must be 0 for user or 1 for admin'}), 400
+    if len(data['password']) < 2:
+        return jsonify({'message': 'Password must be at least 3 characters long'}), 400
     new_user = Users(name=data['name'], password=data['password'], role=data['role'])
-    new_user.set_password(new_user.password)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User created successfully'}), 201
@@ -40,11 +46,7 @@ def logout():
 
 @api.route('/')
 def is_ready():
-    myUser = Users.query.first()
-    if not myUser:
-        tmp = Users('admin', None,Role.admin).set_password('admin')
-        db.session.add(tmp)
-        db.session.commit()
-        return jsonify({'message': 'API is ready but no user has been created yet'}), 200
-
-    return jsonify({'message': f'API is ready {myUser}'}), 200
+    if not current_user or not current_user.is_authenticated:
+        return jsonify({'message': f'API is ready'}), 200
+    else:
+        return jsonify({'message': f'API is ready '+ current_user.name}), 200
