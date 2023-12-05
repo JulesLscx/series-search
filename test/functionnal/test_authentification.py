@@ -42,3 +42,9 @@ def test_authentification_logout():
         response = test_client.get('/serie-search/logout')
         assert response.status_code == 200
         assert response.json['message'] == 'Logout successful'
+        
+def test_logout_without_login():
+    app = create_app()
+    with app.test_client() as test_client:
+        response = test_client.get('/serie-search/logout')
+        assert response.status_code == 401

@@ -94,3 +94,6 @@ elif sys.argv[1] == "run_api":
     from api.app import create_app
     app = create_app()
     app.run(debug=True)
+else:
+    print("Command not found see help")
+    exit()

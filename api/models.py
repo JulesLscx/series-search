@@ -7,7 +7,8 @@ db = SQLAlchemy()
 class Role(Enum):
     USER = 0
     ADMIN = 1
-    def possible_values(self):
+    @classmethod
+    def possible_values(cls):
         return [Role.USER.value, Role.ADMIN.value]
     def __str__(self) -> str:
         return self.name
