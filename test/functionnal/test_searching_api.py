@@ -4,7 +4,7 @@ def test_empty_search():
     os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
     app = create_app()
     with app.test_client() as test_client:
-        response = test_client.get('/serie-search/search/')
+        response = test_client.get('/serie-search/search')
         assert response.status_code == 400
         assert response.json['message'] == 'Please specify a query as /search/my%20query'
 
