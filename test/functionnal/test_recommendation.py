@@ -89,7 +89,7 @@ def test_recommendation_are_different_when_not_same_series_watched(user_client_w
 def test_recommendation_size_when_user_almost_watched_all_series(user_client_without_watched_serie):
     app = create_app()
     with app.app_context():
-        user = Users.query.filter_by(name='user').first()
+        user = Users.query.get('user')
         for serie in Series.query.all():
             tmp_watched = Watched(user, serie)
             db.session.add(tmp_watched)

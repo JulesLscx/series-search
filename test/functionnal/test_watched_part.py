@@ -10,7 +10,7 @@ import pytest
 def user_client_with_watched_serie():
     app = create_app()
     with app.app_context():
-        user = Users.query.filter_by(name='user').first()
+        user = Users.query.get('user')
         if not user:
             user = Users(name='user', password='your_password', role=0)
             db.session.add(user)
@@ -36,7 +36,7 @@ def user_client_with_watched_serie():
 def user_client_without_watched_serie():
     app = create_app()
     with app.app_context():
-        user = Users.query.filter_by(name='user').first()
+        user = Users.query.get('user')
         if not user:
             user = Users(name='user', password='your_password', role=0)
             db.session.add(user)
