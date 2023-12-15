@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     services:
       elastic:
-        image: elasticsearch
+        image: elasticsearch:8.11.3
+
         ports:
           - 9200:9200
           - 9300:9300
