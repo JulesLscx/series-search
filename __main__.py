@@ -11,7 +11,7 @@ from es_interface.importer import ElasticSearchImports
 from es_interface.query import search
 from elasticsearch import Elasticsearch
 from global_var import ES_ENDPOINT, ES_USER, ES_PASSWORD
-from test.score_search import run as test_search
+# from test.score_search import run as test_search
 
 def get_help():
     help_str = """
@@ -105,7 +105,7 @@ def main():
     elif sys.argv[1] == "score_search":
         es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
         # test_search.run(es)
-        test_search(es)
+        # test_search(es)
         exit()
     elif sys.argv[1] == "recommand":
         es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
