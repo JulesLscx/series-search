@@ -1,7 +1,8 @@
 from nltk.stem import WordNetLemmatizer
 from unidecode import unidecode as remove_accents
 import string
-
+import nltk
+nltk.download('wordnet')
 
 def lemma(text: list) -> list:
     lemmatizer = WordNetLemmatizer()

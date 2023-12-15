@@ -116,6 +116,12 @@ def main():
         run_tests()
         exit()
     elif sys.argv[1] == "run_api":
+        es = Elasticsearch([ES_ENDPOINT], basic_auth=(ES_USER, ES_PASSWORD) , verify_certs=False, ssl_show_warn=False)
+        if not es.ping():
+            print("Could not connect to ElasticSearch")
+            exit()
+        if not es.indices.exists(index="testing"):
+            treat_import_command()
         launch_api()
     else:
         print("Unknown command")
