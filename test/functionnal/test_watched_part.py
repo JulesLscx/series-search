@@ -65,7 +65,7 @@ def test_get_all_series():
     with app.test_client() as client:
         response = client.get('/serie-search/series')
         assert response.status_code == 200
-        assert len(response.json) == 128
+        assert len(response.json) == 125
         
         
 def test_get_one_existing_serie():

@@ -40,7 +40,8 @@ def create_serie(app):
     with app.app_context():
         for serie in series:
             if not Series.query.filter_by(title=serie).first():
-                tmp = Series(serie)
+                print(serie)
+                tmp = Series( serie)
                 db.session.add(tmp)
                 db.session.commit()
             else:
