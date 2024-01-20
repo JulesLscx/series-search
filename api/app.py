@@ -53,6 +53,12 @@ def create_app():
     app.config['SECRET_KEY'] = "your_secret_key"
     app.register_blueprint(api, url_prefix='/serie-search')
     db.init_app(app)
+    
+    with app.app_context():
+        if not os.path.exists('site.db'):
+            # Create the database tables only if they don't exist
+            db.create_all()
+ 
     create_serie(app)
     login_manager = LoginManager(app)
     @login_manager.user_loader
