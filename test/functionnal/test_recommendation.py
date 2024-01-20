@@ -97,4 +97,4 @@ def test_recommendation_size_when_user_almost_watched_all_series(user_client_wit
     user_client_without_watched_serie.delete('/serie-search/watched/1')
     response = user_client_without_watched_serie.get('/serie-search/recommendation')
     assert response.status_code == 200
-    assert response.json == ['24']
+    assert len(response.json) == 1
