@@ -22,10 +22,8 @@ Le projet est organisé en plusieurs dossiers et fichiers principaux :
 - Elasticsearch
 
 ### Installation
-1. Cloner le dépôt.
-2. Installer les dépendances :
-   ```bash
-   pip install -r requirements.txt
+- Cloner le projet [https://github.com/JulesLscx/series-search.git](https://github.com/JulesLscx/series-search.git)
+- Et voire [install.md](install.md) pour plus d'informations.
 
 
 ## Utilisation
@@ -33,15 +31,5 @@ Le projet est organisé en plusieurs dossiers et fichiers principaux :
 ### Exécuter l'Application
 Le point d'entrée principal du projet `series-search` est le fichier `__main__.py`. Pour lancer l'application, vous devez exécuter ce fichier avec Python. Selon la conception de votre application, `__main__.py` peut accepter différents arguments pour contrôler son comportement.
 
-```bash
-python __main__.py [options]
-
-## Commande: `--example-command`
-
-### Description
-`--example-command` est une commande conçue pour [expliquez ce que fait la commande, par exemple, lancer une analyse spécifique, démarrer un serveur, etc.].
-
-### Syntaxe
-```bash
-python __main__.py --example-command [options]
+La documentation de l'application est disponible dans le fichier [documentation.md](documentation.md).
 
