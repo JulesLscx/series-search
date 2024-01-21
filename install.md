@@ -28,7 +28,7 @@ L'application créé un index `testing` assurez vous que l'index n'existe pas d�
 
 ### Installation des dépendances
 
-Vous pouvez pour ne pas ruiner votre environnement python, créer un environnement virtuel, une fois dans l'envirronement virtuel, installer les dépendances avec la commande suivante :
+Vous pouvez pour ne pas ruiner votre environnement python, créer un environnement virtuel, une fois dans l'environnement virtuel, installer les dépendances avec la commande suivante :
 
 ```bash
 pip install -r requirements.txt
