@@ -24,7 +24,7 @@ def create_user(app):
             raise Exception("User already created")
 def get_series():
     series = []
-    if os.path.exists('./statics.json'):
+    if os.path.exists('./api/statics.json'):
         my_json = json.load(open('./api/statics.json'))
         if my_json:
             for serie in my_json:
